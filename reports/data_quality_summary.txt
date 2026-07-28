@@ -1,0 +1,11 @@
+Data Quality Summary
+
+1. Successfully loaded all 10 CSV datasets.
+2. Verified the shape, data types and first 5 rows of each dataset.
+3. No duplicate records were found in any dataset.
+4. 04_monthly_sip_inflows.csv contains 12 missing values in the yoy_growth_pct column.
+5. fund_master contains 10 unique fund houses.
+6. Categories available: Equity and Debt.
+7. Multiple sub-categories are available such as Large Cap, Mid Cap, Small Cap, Gilt, Liquid, Flexi Cap and ELSS.
+8. The provided fund_master dataset does not contain a risk_grade column.
+9. All AMFI codes in fund_master are present in nav_history.
