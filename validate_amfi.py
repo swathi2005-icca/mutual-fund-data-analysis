@@ -13,3 +13,10 @@ if len(missing_codes) == 0:
 else:
     print("Missing AMFI Codes:")
     print(missing_codes)
+
+
+# import pandas as pd
+
+# df = pd.read_csv("data/raw/03_aum_by_fund_house.csv")
+# print(df.columns)
+# print(df.head())
