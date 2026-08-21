@@ -17,9 +17,14 @@
 #     print("Failed to fetch data.")
 
 
+"""
+Fetch NAV data for selected mutual fund schemes.
+"""
 
+import os
 import requests
 import pandas as pd
+
 
 schemes = {
     "SBI_Bluechip": 119551,
@@ -28,21 +33,36 @@ schemes = {
     "Axis_Bluechip": 119092,
     "Kotak_Bluechip": 120841
 }
-for scheme_name, amfi_code in schemes.items():
 
-    print(f"\nFetching NAV for {scheme_name}...")
 
-    url = f"https://api.mfapi.in/mf/{amfi_code}"
+def fetch_nav_data():
+    """Fetch NAV history and save it as CSV files."""
 
-    response = requests.get(url)
+    os.makedirs("data/raw", exist_ok=True)
 
-    data = response.json()
+    for scheme_name, amfi_code in schemes.items():
+        print(f"Fetching NAV for {scheme_name}...")
 
-    nav_df = pd.DataFrame(data["data"])
+        url = f"https://api.mfapi.in/mf/{amfi_code}"
 
-    file_name = f"data/raw/{scheme_name}.csv"
+        try:
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
 
-    nav_df.to_csv(file_name, index=False)
+            data = response.json()
+            nav_df = pd.DataFrame(data["data"])
 
-    print(f"{scheme_name} data saved successfully.")
-    print(nav_df.head())
+            file_name = f"data/raw/{scheme_name}.csv"
+            nav_df.to_csv(file_name, index=False)
+
+            print(f"{scheme_name} data saved successfully.")
+
+        except requests.RequestException as error:
+            print(f"Error fetching {scheme_name}: {error}")
+
+        except KeyError:
+            print(f"Invalid data received for {scheme_name}")
+
+
+if __name__ == "__main__":
+    fetch_nav_data()
